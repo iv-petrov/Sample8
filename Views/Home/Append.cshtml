@@ -1,0 +1,33 @@
+﻿@using Sample8.DataAccess
+@{
+	ViewData["Title"] = "Добавление компании";
+}
+<h1>@ViewData["Title"]</h1>
+
+@model Company
+
+@using (Html.BeginForm("Save", "", FormMethod.Post))
+{
+    <div>
+        @Html.HiddenFor(m => m.Id)
+    </div>
+    <table>
+        <tr>
+            <td width="120px"><label>Наименование:</label></td>
+            <td>@Html.TextBox("Name", Model.Name)</td>
+        </tr>
+        <tr>
+            <td><label>ИНН:</label></td>
+            <td>@Html.TextBox("Inn", Model.Inn)</td>
+        </tr>
+        <tr>
+            <td><label>E-mail:</label></td>
+            <td>@Html.TextBox("Email", Model.Email)</td>
+        </tr>
+    </table>
+    <p> </p>
+    <div>
+        <input type="submit" value="Добавить" />
+    </div>
+    @Html.ValidationSummary()
+}
