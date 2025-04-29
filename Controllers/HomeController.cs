@@ -1,19 +1,16 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Sample8.Domain;
 using Sample8.DataModels;
+using Sample8.DataAccess;
 
 namespace Sample8.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly ICompanyService _companyService;
-
-        public HomeController(ILogger<HomeController> logger, ICompanyService service)
+        private readonly CompanyService _companyService;
+        public HomeController(ApplicationDbContext context)
         { 
-            _logger = logger;
-            _companyService = service;
+            _companyService = new CompanyService(context);
         }
 
         public IActionResult Index()

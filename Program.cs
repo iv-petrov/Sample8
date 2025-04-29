@@ -1,4 +1,5 @@
-using Sample8.Controllers;
+using Microsoft.EntityFrameworkCore;
+using Sample8.DataAccess;
 using Sample8.Domain;
 
 namespace Sample8
@@ -9,9 +10,9 @@ namespace Sample8
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("MyDataBase"));
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            builder.Services.AddSingleton<ICompanyService,CompanyService>();
 
             var app = builder.Build();
 

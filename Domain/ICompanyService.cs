@@ -1,4 +1,4 @@
-﻿using Sample8.DataModels;
+﻿using Sample8.DataAccess;
 
 namespace Sample8.Domain
 {

@@ -1,7 +1,8 @@
-﻿@{
+﻿@using Sample8.DataAccess
+@{
     ViewData["Title"] = "Home Page";
 }
-@model CompaniesList
+@model IEnumerable<Company>
 
 <h1>Список зарегистрированных компаний</h1>
 <div>

@@ -1,64 +1,66 @@
-﻿using Sample8.Domain;
-using Sample8.DataModels;
+﻿using Sample8.DataAccess;
+using Sample8.Domain;
 
 namespace Sample8.Controllers
 {
     public class CompanyService : ICompanyService
     {
-        public List<Company> Companies { get; set; }
-        public CompanyService() 
+        private ApplicationDbContext _context;
+        public CompanyService(ApplicationDbContext context)
         {
-            Companies = new CompaniesList();
+            _context = context;
         }
         /// <inheritdoc/>
         public IEnumerable<Company> GetAll()
         {
-            return Companies;
+            return _context.Companies;
         }
         /// <inheritdoc/>
         public Company GetById(int id)
         {
-            return Companies.FirstOrDefault(x => x.Id == id);
+            return _context.Companies.FirstOrDefault(x => x.Id == id);
         }
         /// <inheritdoc/>
         public void AppendCompany(Company company) 
         {
             ArgumentNullException.ThrowIfNull(company);
 
-            if (Companies.Any(c => c.Inn == company.Inn)) 
+            if (_context.Companies.Any(c => c.Inn == company.Inn)) 
             {
                 throw new ArgumentException("ИНН не должен дублироваться");
             }
-            if (Companies.Count == 0)
+            if (!_context.Companies.Any())
             {
                 company.Id = 1;
             }
             else
             {
-                company.Id = Companies.Max(x => x.Id) + 1;
+                company.Id = _context.Companies.Max(x => x.Id) + 1;
             }
-            Companies.Add(company);
+            _context.Companies.Add(company);
+            _context.SaveChanges();
         }
         /// <inheritdoc/>
         public void UpdateCompany(Company company)
         {
             ArgumentNullException.ThrowIfNull(company);
 
-            if (!Companies.Any(x => x.Id == company.Id))
+            if (!_context.Companies.Any(x => x.Id == company.Id))
             {
                 throw new ArgumentException(@"Компании {company.id} не существует");
             }
-            int i = Companies.FindIndex(x => x.Id == company.Id);
-            Companies[i] = company;
+            _context.Companies.Update(company);
+            _context.SaveChanges();
         }
         /// <inheritdoc/>
         public void DeleteCompany(int id) 
         {
-            if (!Companies.Any(x => x.Id == id))
+            if (!_context.Companies.Any(x => x.Id == id))
             {
                 throw new ArgumentException(@"Компании {id} не существует");
             }
-            Companies.Remove(GetById(id));
+            _context.Companies.Remove(GetById(id));
+            _context.SaveChanges();
         }
     }
 }

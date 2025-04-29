@@ -1,4 +1,4 @@
-namespace Sample8.DataModels
+namespace Sample8.DataAccess
 {
     public class ErrorViewModel
     {
